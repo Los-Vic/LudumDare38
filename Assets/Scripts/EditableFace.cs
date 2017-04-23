@@ -17,14 +17,18 @@ namespace LudumDare
 	[ExecuteInEditMode]
 	public class EditableFace : MonoBehaviour {
 		#region var
-		public bool lockLocalPos;
+
 		public FaceState faceState;
+		public FaceDir fDir;
+		public FaceState preState;
 
 		private Material mat;
-		private Vector3 oriPos;
 		private ColorCollection cc;
+
+
 		#endregion
 
+		#region UnityEvent
 		void Awake()
 		{
 			#if UNITY_EDITOR
@@ -44,16 +48,17 @@ namespace LudumDare
 		}
 		void Start()
 		{
-			oriPos = transform.localPosition;
+			preState = faceState;
+
 		}
 		void Update()
 		{				
 			mat.color = cc.GetColor(faceState);
+		
 		}
 		void LateUpdate()
 		{
-			if (lockLocalPos)
-				transform.localPosition = oriPos;
+			
 		}
 		void OnApplicationQuit()
 		{
@@ -61,6 +66,13 @@ namespace LudumDare
 			Destroy (mat);
 			#endif
 		}
+		void OnMouseDown()
+		{
+			Debug.Log ("mouse event " + gameObject.name);
+
+		}
+		#endregion
+
 
 	}
 
