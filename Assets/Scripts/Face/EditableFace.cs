@@ -47,6 +47,9 @@ namespace LudumDare
 			
 			#if UNITY_EDITOR
 			mat = GetComponent<Renderer>().sharedMaterial;
+
+			//DestroyImmediate(GetComponent<Renderer>().material);
+
 			Material m = Instantiate(mat) as Material;
 			GetComponent<Renderer>().material = m;
 			mat  = m;

@@ -7,7 +7,8 @@ public class FaceStateCheck : MonoBehaviour {
 
 		private bool toGreen;
 		private EditableFace eFace;
-
+		private bool dead; //是否是水块 ，或绿地
+		private bool added; // 是否加入了Lifefaceholder的ediFace中f
 
 		void Awake()
 		{
@@ -15,15 +16,28 @@ public class FaceStateCheck : MonoBehaviour {
 		}
 
 		void Start () {
-				toGreen = false;
+			toGreen = false;
+			added = false;
+			if (eFace.faceState == FaceState.Brown || eFace.faceState == FaceState.Gray)
+				dead = true;
+			else {
+				dead = false;
+				added = true;
+				LifeFaceHolder.instance.ediFace.Add (eFace);
+			}
 		}
 	
 
 		void Update () {
 			if (toGreen&&eFace.faceState!=FaceState.Water&&eFace.faceState!= FaceState.Gray) {	
 					eFace.faceState = FaceState.Green;
+					dead = false;
 					toGreen = false;
 				}
+			if (!dead&&!added) {
+				LifeFaceHolder.instance.ediFace.Add (eFace);
+				added = true;
+			}
 		}
 		void LateUpdate()
 		{
@@ -32,37 +46,68 @@ public class FaceStateCheck : MonoBehaviour {
 		}
 		void OnMouseDown()
 		{
-			if (!eFace.side) 
-			{
-				if (Input.GetMouseButton (0)&&eFace.faceState!= FaceState.Gray)
-				{
+			if (WaterCounter.instance.leftWater >= 0) {
+				if (!eFace.side) {
+					if (Input.GetMouseButton (0) && eFace.faceState != FaceState.Gray && eFace.faceState != FaceState.Water) {
 
-					FindNearByWater (true);
+						FindNearByWater (true);
 
-					foreach (EditableFace ef in eFace.fNearBy.highLevel)
-					{
-						if (ef.height > eFace.height) {
-							//Debug.Log ("ok");
-							if(ef.faceState!= FaceState.Gray)
-							{
-								foreach (EditableFace m_ef in ef.fNearBy.lowLevel) {
-									if (m_ef.preState == FaceState.Water) {
-										ef.faceState = FaceState.Water;
-										eFace.faceState = FaceState.Water;
+						if (eFace.faceState != FaceState.Water)
+							foreach (EditableFace ef in eFace.fNearBy.highLevel) {
+								if (ef.side) {
+									//Debug.Log ("ok");
+									if (ef.faceState != FaceState.Gray) {
+										foreach (EditableFace m_ef in ef.fNearBy.lowLevel) {
+											if (m_ef.preState == FaceState.Water) {
+												ef.faceState = FaceState.Water;
+												ef.GetComponent<FaceStateCheck> ().dead = false;
+
+												if (eFace.faceState != FaceState.Water) {
+													eFace.faceState = FaceState.Water;
+													WaterCounter.instance.AddWater (1);
+													eFace.GetComponent<FaceStateCheck> ().dead = false;
+												}
+											}
+										}
+									}
+								}
+							}
+					
+						foreach (EditableFace ef in eFace.fNearBy.lowLevel) {
+							if (ef.side) {
+								//Debug.Log ("ok");
+								if (ef.faceState != FaceState.Gray) {
+									foreach (EditableFace m_ef in ef.fNearBy.highLevel) {
+										if (m_ef.preState == FaceState.Water) {
+											ef.faceState = FaceState.Water;
+											ef.GetComponent<FaceStateCheck> ().dead = false;
+										}
 									}
 								}
 							}
 						}
-					}
-					if (eFace.height == 1) {
-						foreach (EditableFace ef in eFace.fNearBy.lowLevel)
-						{
-							if (ef.preState == FaceState.Water)
-								eFace.faceState = FaceState.Water;
+
+
+						if (eFace.height == 1 && eFace.faceState != FaceState.Water) {
+							foreach (EditableFace ef in eFace.fNearBy.lowLevel) {
+								if (eFace.faceState != FaceState.Water && ef.preState == FaceState.Water) {
+									eFace.faceState = FaceState.Water;
+									WaterCounter.instance.AddWater (1);
+									eFace.GetComponent<FaceStateCheck> ().dead = false;
+								}
+							}
+							if (eFace.faceState != FaceState.Water)
+								foreach (EditableFace ef in eFace.fNearBy.highLevel) {
+									if (eFace.faceState != FaceState.Water && ef.preState == FaceState.Water) {
+										eFace.faceState = FaceState.Water;
+										WaterCounter.instance.AddWater (1);
+										eFace.GetComponent<FaceStateCheck> ().dead = false;
+									}
+								}
 						}
+
+
 					}
-
-
 				}
 			}
 
@@ -74,8 +119,11 @@ public class FaceStateCheck : MonoBehaviour {
 		{
 			foreach (EditableFace ef in eFace.fNearBy.midLevel) {
 				if (ef.preState == FaceState.Water) {
-					if (hit)
+					if (hit) {
 						eFace.faceState = FaceState.Water;
+						WaterCounter.instance.AddWater (1);
+						eFace.GetComponent<FaceStateCheck> ().dead = false;
+					}
 					else
 						toGreen = true;
 				}

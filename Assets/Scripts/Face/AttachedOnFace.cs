@@ -6,14 +6,18 @@ namespace LudumDare
 {
 	public enum OnFaceObject
 	{
-		Tree,Village,Null
+		Tree,Village,Source,Null
 	};
 	
 	public class AttachedOnFace : MonoBehaviour {
 
 		public OnFaceObject onFaceObj;
+		public Transform windStart;
+		public Transform windEnd;
 		private EditableFace eFace;
-		private int spawnTimes;
+	//	private int spawnTimes;
+		private Vector3 windDir;
+		private GameObject m_cloud;
 
 		void Awake()
 		{
@@ -22,14 +26,16 @@ namespace LudumDare
 		}
 		void Start()
 		{
-			spawnTimes = 1;
+			if (onFaceObj == OnFaceObject.Tree)
+				windDir = windEnd.position - windStart.position;
+			else
+				windDir = Vector3.zero;
 		}
 
 		void Update()
 		{
-			if (spawnTimes>0&&onFaceObj == OnFaceObject.Tree && eFace.faceState == FaceState.Water) {
-				SpawnManager.Instance.SpawnCloud (transform.position+eFace.normal*1.5f,RotateAxis.Z);
-				spawnTimes--;
+			if (onFaceObj == OnFaceObject.Tree && eFace.faceState == FaceState.Water&&m_cloud == null) {
+				SpawnManager.Instance.SpawnCloud (transform.position+eFace.normal*1.5f,eFace.normal,windDir.normalized,out m_cloud);
 			}
 		}
 	}

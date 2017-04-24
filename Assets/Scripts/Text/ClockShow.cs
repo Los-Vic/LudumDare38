@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace LudumDare
 {
 
-	public class TextShow : MonoBehaviour {
+	public class ClockShow : MonoBehaviour {
 
 		private Text m_text;
 		public Clock clock;

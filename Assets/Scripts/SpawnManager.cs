@@ -9,10 +9,11 @@ namespace LudumDare
 		public GameObject cloud;
 
 
-		public void SpawnCloud(Vector3 pos , RotateAxis axis)
+		public void SpawnCloud(Vector3 pos , Vector3 normal,Vector3 wind,out GameObject yun)
 		{
-			GameObject yun = Instantiate (cloud);
+			yun = Instantiate (cloud);
 			yun.transform.position = pos;
+			Vector3 axis = Vector3.Cross (normal, wind).normalized;
 			yun.GetComponent<Cloud> ().axis = axis;
 		}
 
