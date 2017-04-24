@@ -19,7 +19,7 @@ struct Input {
 
 void surf (Input IN, inout SurfaceOutput o) {
 	fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-	o.Albedo = c.rgb*_Color;
+	o.Albedo = c.rgb*_Color*1.5f;
 	o.Alpha = c.a;
 }
 ENDCG

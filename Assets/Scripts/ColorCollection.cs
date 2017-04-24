@@ -24,6 +24,7 @@ public class ColorCollection : MonoBehaviour {
 				return Color.black;
 			}
 		}
+
 }
 
 }

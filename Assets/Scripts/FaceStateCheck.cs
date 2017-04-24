@@ -8,9 +8,10 @@ public class FaceStateCheck : MonoBehaviour {
 		private bool toGreen;
 		private EditableFace eFace;
 
+
 		void Awake()
 		{
-			eFace = GetComponent<EditableFace> ();
+			eFace = GetComponent<EditableFace> ();		
 		}
 
 		void Start () {
@@ -19,7 +20,7 @@ public class FaceStateCheck : MonoBehaviour {
 	
 
 		void Update () {
-			if (toGreen&&eFace.faceState!=FaceState.Water) {	
+			if (toGreen&&eFace.faceState!=FaceState.Water&&eFace.faceState!= FaceState.Gray) {	
 					eFace.faceState = FaceState.Green;
 					toGreen = false;
 				}
@@ -31,13 +32,56 @@ public class FaceStateCheck : MonoBehaviour {
 		}
 		void OnMouseDown()
 		{
-			if (Input.GetMouseButton (0)) {
-				FindNearByWater (true);
+			if (!eFace.side) 
+			{
+				if (Input.GetMouseButton (0)&&eFace.faceState!= FaceState.Gray)
+				{
+
+					FindNearByWater (true);
+
+					foreach (EditableFace ef in eFace.fNearBy.highLevel)
+					{
+						if (ef.height > eFace.height) {
+							//Debug.Log ("ok");
+							if(ef.faceState!= FaceState.Gray)
+							{
+								foreach (EditableFace m_ef in ef.fNearBy.lowLevel) {
+									if (m_ef.preState == FaceState.Water) {
+										ef.faceState = FaceState.Water;
+										eFace.faceState = FaceState.Water;
+									}
+								}
+							}
+						}
+					}
+					if (eFace.height == 1) {
+						foreach (EditableFace ef in eFace.fNearBy.lowLevel)
+						{
+							if (ef.preState == FaceState.Water)
+								eFace.faceState = FaceState.Water;
+						}
+					}
+
+
+				}
 			}
+
 		}
 
 	#region Method
 
+		void FindNearByWater(bool hit)
+		{
+			foreach (EditableFace ef in eFace.fNearBy.midLevel) {
+				if (ef.preState == FaceState.Water) {
+					if (hit)
+						eFace.faceState = FaceState.Water;
+					else
+						toGreen = true;
+				}
+			}
+		}
+		/*
 	void FindNearByWater(bool hit)
 	{
 			if (eFace.faceState == FaceState.Gray| eFace.faceState == FaceState.Water)
@@ -79,6 +123,7 @@ public class FaceStateCheck : MonoBehaviour {
 		}
 	}
 	
+		/*
 		void FindOnXZPlane(bool hit)
 		{
 			Collider[] colls = new Collider[1];
@@ -227,6 +272,7 @@ public class FaceStateCheck : MonoBehaviour {
 				}
 			}	
 		}
+		*/
 		#endregion
 
 }
