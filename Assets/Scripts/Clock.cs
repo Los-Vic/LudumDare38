@@ -9,6 +9,7 @@ namespace LudumDare
 		public float duration;
 		public static Clock instance;
 
+
 		private float elapse;
 
 		void Awake()
@@ -25,5 +26,6 @@ namespace LudumDare
 			if (duration > 0)
 				duration -= Time.deltaTime*elapse;
 		}
+
 	}
 }

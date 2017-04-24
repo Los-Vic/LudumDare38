@@ -9,6 +9,7 @@ namespace LudumDare
 
 		public float speed;
 		public Vector3 axis;
+		public AttachedOnFace attachedFace;
 
 		void Start()
 		{
@@ -18,7 +19,11 @@ namespace LudumDare
 		{
 			transform.RotateAround (Vector3.zero, axis, speed * Time.deltaTime);
 		}
-
+		void OnDestroy()
+		{
+			if (attachedFace != null)
+				attachedFace.m_cloud = null;
+		}
 
 
 	}

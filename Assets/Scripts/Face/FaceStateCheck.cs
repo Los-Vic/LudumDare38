@@ -50,10 +50,10 @@ public class FaceStateCheck : MonoBehaviour {
 				if (!eFace.side) {
 					if (Input.GetMouseButton (0) && eFace.faceState != FaceState.Gray && eFace.faceState != FaceState.Water) {
 
-						FindNearByWater (true);
+						FindNearByWater (true);//四周
 
-						if (eFace.faceState != FaceState.Water)
-							foreach (EditableFace ef in eFace.fNearBy.highLevel) {
+							foreach (EditableFace ef in eFace.fNearBy.highLevel)//点低处，高处有水时
+							{
 								if (ef.side) {
 									//Debug.Log ("ok");
 									if (ef.faceState != FaceState.Gray) {
@@ -72,8 +72,10 @@ public class FaceStateCheck : MonoBehaviour {
 									}
 								}
 							}
-					
-						foreach (EditableFace ef in eFace.fNearBy.lowLevel) {
+						
+						if (eFace.faceState == FaceState.Water)
+						foreach (EditableFace ef in eFace.fNearBy.lowLevel) //点高处，低处有水时
+						{
 							if (ef.side) {
 								//Debug.Log ("ok");
 								if (ef.faceState != FaceState.Gray) {
@@ -88,7 +90,8 @@ public class FaceStateCheck : MonoBehaviour {
 						}
 
 
-						if (eFace.height == 1 && eFace.faceState != FaceState.Water) {
+						if (eFace.height == 1 && eFace.faceState != FaceState.Water) 
+						{
 							foreach (EditableFace ef in eFace.fNearBy.lowLevel) {
 								if (eFace.faceState != FaceState.Water && ef.preState == FaceState.Water) {
 									eFace.faceState = FaceState.Water;

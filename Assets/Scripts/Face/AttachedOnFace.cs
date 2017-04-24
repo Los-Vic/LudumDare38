@@ -17,11 +17,12 @@ namespace LudumDare
 		private EditableFace eFace;
 	//	private int spawnTimes;
 		private Vector3 windDir;
-		private GameObject m_cloud;
+		public GameObject m_cloud;
 
 		void Awake()
 		{
 			eFace = GetComponent<EditableFace> ();
+			m_cloud = null;
 
 		}
 		void Start()
@@ -35,7 +36,8 @@ namespace LudumDare
 		void Update()
 		{
 			if (onFaceObj == OnFaceObject.Tree && eFace.faceState == FaceState.Water&&m_cloud == null) {
-				SpawnManager.Instance.SpawnCloud (transform.position+eFace.normal*1.5f,eFace.normal,windDir.normalized,out m_cloud);
+				SpawnManager.instance.SpawnCloud (transform.position+eFace.normal*1.5f,eFace.normal,windDir.normalized,this,out m_cloud);
+				m_cloud.SetActive (true);
 			}
 		}
 	}
