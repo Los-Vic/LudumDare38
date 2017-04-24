@@ -8,7 +8,6 @@ namespace LudumDare
 
 		public int startWater;
 		public int maxWater;
-		public int leftWater;
 		public List<EditableFace> sourceFaces;
 		public bool circular;
 
@@ -27,7 +26,7 @@ namespace LudumDare
 		}
 		void Update()
 		{
-			if (leftWater < 0)
+			if (Clock.instance.duration < 0)
 				LifeFaceHolder.instance.FacesDie ();
 		}
 		void OnDrawGizmos()
@@ -35,14 +34,14 @@ namespace LudumDare
 			Gizmos.color = Color.red;
 
 			foreach (EditableFace ef in sourceFaces) {
-				Gizmos.DrawRay (ef.transform.position, ef.normal*3f);
+				Gizmos.DrawRay (ef.transform.position, ef.normal*6f);
 			}
 		}
 
 		void FixedUpdate()
 		{
 			foreach (EditableFace ef in sourceFaces) {
-				Ray ray = new Ray (ef.transform.position, ef.normal * 3f);
+				Ray ray = new Ray (ef.transform.position, ef.normal * 6f);
 				RaycastHit hit;
 				if (Physics.Raycast (ray, out hit)) {
 					circular = true;
@@ -54,8 +53,6 @@ namespace LudumDare
 		public void AddWater(int i)
 		{
 			totalWater += i;
-			if (!circular)
-				leftWater--;
 		}
 		public int GetWaterCount()
 		{

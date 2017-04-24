@@ -8,7 +8,7 @@ namespace LudumDare
 
 		public float duration;
 		public static Clock instance;
-
+		public bool stop;
 
 		private float elapse;
 
@@ -19,12 +19,17 @@ namespace LudumDare
 		void Start()
 		{
 			elapse = 1;
+			stop = false;
 		}
 		void Update()
 		{
-			elapse = 1 + 4*WaterCounter.instance.GetWaterCount () / WaterCounter.instance.maxWater;
-			if (duration > 0)
-				duration -= Time.deltaTime*elapse;
+			if (!stop) {
+				elapse = 1 + 4 * WaterCounter.instance.GetWaterCount () / WaterCounter.instance.maxWater;
+				if (duration > 0)
+					duration -= Time.deltaTime * elapse;
+			}
+			if (WaterCounter.instance.circular)
+				stop = true;
 		}
 
 	}

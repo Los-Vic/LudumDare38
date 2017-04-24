@@ -6,11 +6,11 @@ namespace LudumDare
 
 	public enum FaceState
 	{
-		Brown = 0,
-		Yellow = 1,
-		Green =2,
-		Water = 3,
-		Gray = 4
+		Brown,
+		Green, 
+		Water,
+		Gray,
+		Side
 	};
 
 
@@ -67,11 +67,13 @@ namespace LudumDare
 		void Start()
 		{
 			preState = faceState;
+			mat.color = cc.GetColor(faceState);
 
 		}
 		void Update()
 		{				
-			mat.color = cc.GetColor(faceState);
+			if(preState!=faceState)
+				mat.color = cc.GetColor(faceState);
 		
 		}
 		void LateUpdate()

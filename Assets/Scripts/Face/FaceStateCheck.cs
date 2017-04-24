@@ -18,7 +18,7 @@ public class FaceStateCheck : MonoBehaviour {
 		void Start () {
 			toGreen = false;
 			added = false;
-			if (eFace.faceState == FaceState.Brown || eFace.faceState == FaceState.Gray)
+			if (eFace.faceState == FaceState.Brown || eFace.faceState == FaceState.Gray || eFace.faceState == FaceState.Side)
 				dead = true;
 			else {
 				dead = false;
@@ -46,52 +46,49 @@ public class FaceStateCheck : MonoBehaviour {
 		}
 		void OnMouseDown()
 		{
-			if (WaterCounter.instance.leftWater >= 0) {
+			if (Clock.instance.duration > 0) {
 				if (!eFace.side) {
 					if (Input.GetMouseButton (0) && eFace.faceState != FaceState.Gray && eFace.faceState != FaceState.Water) {
 
 						FindNearByWater (true);//四周
 
-							foreach (EditableFace ef in eFace.fNearBy.highLevel)//点低处，高处有水时
-							{
-								if (ef.side) {
-									//Debug.Log ("ok");
-									if (ef.faceState != FaceState.Gray) {
-										foreach (EditableFace m_ef in ef.fNearBy.lowLevel) {
-											if (m_ef.preState == FaceState.Water) {
-												ef.faceState = FaceState.Water;
-												ef.GetComponent<FaceStateCheck> ().dead = false;
+						foreach (EditableFace ef in eFace.fNearBy.highLevel) {//点低处，高处有水时
+							if (ef.side) {
+								//Debug.Log ("ok");
+								if (ef.faceState != FaceState.Gray) {
+									foreach (EditableFace m_ef in ef.fNearBy.lowLevel) {
+										if (m_ef.preState == FaceState.Water) {
+											ef.faceState = FaceState.Water;
+											ef.GetComponent<FaceStateCheck> ().dead = false;
 
-												if (eFace.faceState != FaceState.Water) {
-													eFace.faceState = FaceState.Water;
-													WaterCounter.instance.AddWater (1);
-													eFace.GetComponent<FaceStateCheck> ().dead = false;
-												}
+											if (eFace.faceState != FaceState.Water) {
+												eFace.faceState = FaceState.Water;
+												WaterCounter.instance.AddWater (1);
+												eFace.GetComponent<FaceStateCheck> ().dead = false;
 											}
 										}
 									}
 								}
 							}
+						}
 						
 						if (eFace.faceState == FaceState.Water)
-						foreach (EditableFace ef in eFace.fNearBy.lowLevel) //点高处，低处有水时
-						{
-							if (ef.side) {
-								//Debug.Log ("ok");
-								if (ef.faceState != FaceState.Gray) {
-									foreach (EditableFace m_ef in ef.fNearBy.highLevel) {
-										if (m_ef.preState == FaceState.Water) {
-											ef.faceState = FaceState.Water;
-											ef.GetComponent<FaceStateCheck> ().dead = false;
+							foreach (EditableFace ef in eFace.fNearBy.lowLevel) { //点高处，低处有水时
+								if (ef.side) {
+									//Debug.Log ("ok");
+									if (ef.faceState != FaceState.Gray) {
+										foreach (EditableFace m_ef in ef.fNearBy.highLevel) {
+											if (m_ef.preState == FaceState.Water) {
+												ef.faceState = FaceState.Water;
+												ef.GetComponent<FaceStateCheck> ().dead = false;
+											}
 										}
 									}
 								}
 							}
-						}
 
 
-						if (eFace.height == 1 && eFace.faceState != FaceState.Water) 
-						{
+						if (eFace.height == 1 && eFace.faceState != FaceState.Water) {
 							foreach (EditableFace ef in eFace.fNearBy.lowLevel) {
 								if (eFace.faceState != FaceState.Water && ef.preState == FaceState.Water) {
 									eFace.faceState = FaceState.Water;
@@ -112,8 +109,8 @@ public class FaceStateCheck : MonoBehaviour {
 
 					}
 				}
-			}
 
+			}
 		}
 
 	#region Method

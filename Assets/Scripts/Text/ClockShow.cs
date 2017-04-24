@@ -20,6 +20,8 @@ namespace LudumDare
 			m_text.text = "Seconds Left: " + (int)clock.duration;
 			if(clock.duration <= 0)
 				m_text.text = "Game should be over!";
+			if(WaterCounter.instance.circular)
+				m_text.text = "Water Circulation Builded";
 		}
 	}
 }

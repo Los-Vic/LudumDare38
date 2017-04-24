@@ -36,7 +36,7 @@ namespace LudumDare
 		void Update()
 		{
 			if (onFaceObj == OnFaceObject.Tree && eFace.faceState == FaceState.Water&&m_cloud == null) {
-				SpawnManager.instance.SpawnCloud (transform.position+eFace.normal*1.5f,eFace.normal,windDir.normalized,this,out m_cloud);
+				SpawnManager.instance.SpawnCloud (transform.position+eFace.normal*3f,eFace.normal,windDir.normalized,this,out m_cloud);
 				m_cloud.SetActive (true);
 			}
 		}

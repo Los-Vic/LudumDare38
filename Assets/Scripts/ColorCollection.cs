@@ -11,15 +11,19 @@ public class ColorCollection : MonoBehaviour {
 		{
 			switch (fs) {
 			case FaceState.Brown:
-				return colors [0];
-			case FaceState.Yellow:
-				return colors [1];
+				{
+					int id = (int)Mathf.Round(Random.value);
+					return colors [id];
+				}
 			case FaceState.Green:
-				return colors [2];
+				{
+					int id = 2+(int)Mathf.Round(Random.value);
+					return colors [id];
+				}
 			case FaceState.Water:
-				return colors [3];
-			case FaceState.Gray:
 				return colors [4];
+			case FaceState.Gray:
+				return colors [5];
 			default:
 				return Color.black;
 			}
