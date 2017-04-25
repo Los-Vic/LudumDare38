@@ -10,7 +10,9 @@ namespace LudumDare
 		Green, 
 		Water,
 		Gray,
-		Side
+		Side,
+		Tree,
+		Flower
 	};
 
 
@@ -72,13 +74,14 @@ namespace LudumDare
 		}
 		void Update()
 		{				
-			if(preState!=faceState)
-				mat.color = cc.GetColor(faceState);
+			if (preState != faceState) {
+				mat.color = cc.GetColor (faceState);
+			}
 		
 		}
 		void LateUpdate()
 		{
-			
+			preState = faceState;
 		}
 		void OnApplicationQuit()
 		{

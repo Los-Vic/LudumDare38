@@ -24,7 +24,7 @@ namespace LudumDare
 		void Update()
 		{
 			if (!stop) {
-				elapse = 1 + 4 * WaterCounter.instance.GetWaterCount () / WaterCounter.instance.maxWater;
+				elapse = 1 + 0.25f * WaterCounter.instance.GetWaterCount ();
 				if (duration > 0)
 					duration -= Time.deltaTime * elapse;
 			}

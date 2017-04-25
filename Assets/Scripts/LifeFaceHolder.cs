@@ -19,7 +19,13 @@ namespace LudumDare
 			foreach (EditableFace ef in ediFace)
 				ef.faceState = FaceState.Brown;
 		}
-	
+
+		public void FacesFlower()
+		{
+			foreach (EditableFace ef in ediFace) {
+				ef.faceState = FaceState.Water;
+			}
+		}
 	}
 
 }

@@ -18,7 +18,7 @@ public class FaceStateCheck : MonoBehaviour {
 		void Start () {
 			toGreen = false;
 			added = false;
-			if (eFace.faceState == FaceState.Brown || eFace.faceState == FaceState.Gray || eFace.faceState == FaceState.Side)
+			if (eFace.faceState == FaceState.Brown || eFace.faceState == FaceState.Gray || eFace.faceState == FaceState.Side || eFace.faceState == FaceState.Tree)
 				dead = true;
 			else {
 				dead = false;
@@ -29,7 +29,7 @@ public class FaceStateCheck : MonoBehaviour {
 	
 
 		void Update () {
-			if (toGreen&&eFace.faceState!=FaceState.Water&&eFace.faceState!= FaceState.Gray) {	
+			if (toGreen&&eFace.faceState!=FaceState.Water&&eFace.faceState!= FaceState.Gray&&eFace.faceState!= FaceState.Tree) {	
 					eFace.faceState = FaceState.Green;
 					dead = false;
 					toGreen = false;
@@ -42,13 +42,13 @@ public class FaceStateCheck : MonoBehaviour {
 		void LateUpdate()
 		{
 			FindNearByWater (false);
-			eFace.preState = eFace.faceState;
+			//eFace.preState = eFace.faceState;
 		}
 		void OnMouseDown()
 		{
 			if (Clock.instance.duration > 0) {
 				if (!eFace.side) {
-					if (Input.GetMouseButton (0) && eFace.faceState != FaceState.Gray && eFace.faceState != FaceState.Water) {
+					if (Input.GetMouseButton (0) && eFace.faceState != FaceState.Gray && eFace.faceState != FaceState.Water&& eFace.faceState != FaceState.Tree) {
 
 						FindNearByWater (true);//四周
 

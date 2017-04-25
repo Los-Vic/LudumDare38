@@ -49,7 +49,7 @@ namespace LudumDare
 
 			//滚轮滑动
 			if (Input.GetAxis ("Mouse ScrollWheel")<0) {
-				if (cam.fieldOfView < 100)
+				if (cam.fieldOfView < 80)
 					cam.fieldOfView += 2;
 			}
 

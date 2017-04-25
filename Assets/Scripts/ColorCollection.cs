@@ -24,6 +24,8 @@ public class ColorCollection : MonoBehaviour {
 				return colors [4];
 			case FaceState.Gray:
 				return colors [5];
+			case FaceState.Side:
+				return colors [6];
 			default:
 				return Color.black;
 			}
